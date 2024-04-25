@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to ABC store where you can buy different items....
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{ category.name }} - ABC Store
+    {% else %}
+        See our new collections - ABC Store
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+        <div>
+            <div class="row my_row_class">
+                <div class="mx_auto">
+                    <p><a href="{% url 'shop:allProdCat' %}">Our Product Collections</a></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <img class="my_image" src="{{ category.image.url }}" alt="{{ category.name }}" style="width: 600px; height: 600px;">
+        </div>
+        <br>
+        <div>
+            <h1 class="text-center my_title">{{ category.name }}</h1>
+            <p class="text-justify">{{ category.description }}</p>
+        </div>
+    {% else %}
+        <div>
+            <img src="{% static 'rsecond picture.png' %}" alt="OUR PRODUCTS" width="1300px" height="300px">
+        </div>
+        <br>
+        <div>
+            <h1 class="text-center my_title">Our Products collections</h1>
+            <p class="text-justify">Reese’s Peanut Butter Cups. There’s No Wrong Way to Eat a Reese’s....<br>Looking for custom chocolates for employee awards or holiday gifts? Personalized chocolates such as custom chocolate boxes are ideal for corporate events, birthday parties, graduations and other special occasions. Your company logo or message can be printed on custom chocolate bars and other bulk-priced treats at affordable prices. Distribute your personalized chocolate boxes at trade shows for superb branding.</p>
+        </div>
+    {% endif %}
+    <div class="container">
+        <div class="row mx-auto">
+            {% for product in products.object_list %}
+                <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+                    <div class="card text-center" style="min-width: 14rem;">
+                        <a href="{{ product.get_url }}"><img class="card-img-top my_image" src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 200px; height: 200px;"></a>
+                        <div class="card-body">
+                            <h4>{{ product.name }}</h4>
+                            <p>{{ product.price }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+              <div class="mx_auto">
+                    {% if products.paginator.num_pages > 1 %}
+                         <div class="text-center">
+                             {% for pg in products.paginator.page_range %}
+                               <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active pyth{% endif %}">{{pg}}</a>
+                             {% endfor %}
+                          </div>
+                    {% endif %}
+              </div>
+            {% endblock %}
+                </div>
+                </div>
